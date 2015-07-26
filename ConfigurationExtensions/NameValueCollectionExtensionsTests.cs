@@ -16,6 +16,59 @@ namespace ConfigurationExtensions
         }
 
         [Fact]
+        public void Combine()
+        {
+            var one = new NameValueCollection
+            {
+                {"A", "1"}
+            };
+
+            var two = new NameValueCollection
+            {
+                {"A", "2"},
+                {"B", "2"}
+            };
+
+            var three = new NameValueCollection
+            {
+                {"A", "3"},
+                {"B", "3"},
+                {"C", "3"}
+            };
+
+            var result = one.Combine(two, three);
+
+            Assert.Equal(3, result.AllKeys.Length);
+            Assert.Equal("1", result["A"]);
+            Assert.Equal("2", result["B"]);
+            Assert.Equal("3", result["C"]);
+        }
+
+        [Fact]
+        public void CombineAndCreateObject()
+        {
+            var primaryValues = (NameValueCollection) ConfigurationManager
+                .GetSection("primaryValues");
+
+            var primaryObject = primaryValues.CreateObject<TestConfig>();
+            Assert.Equal("Moon", primaryObject.String);
+            Assert.Equal(0, primaryObject.Int);
+
+            var defaultValues = (NameValueCollection)ConfigurationManager
+                .GetSection("defaultValues");
+
+            var defaultObject = defaultValues.CreateObject<TestConfig>();
+            Assert.Equal("Goodnight", defaultObject.String);
+            Assert.Equal(42, defaultObject.Int);
+
+            var combineValues = primaryValues.Combine(defaultValues);
+
+            var combineObject = combineValues.CreateObject<TestConfig>();
+            Assert.Equal("Moon", combineObject.String);
+            Assert.Equal(42, combineObject.Int);
+        }
+
+        [Fact]
         public void CreateSimpleObject()
         {
             var result = ConfigurationManager.AppSettings.CreateObject<TestConfig>();

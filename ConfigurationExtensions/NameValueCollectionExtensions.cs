@@ -16,6 +16,25 @@ namespace ConfigurationExtensions
             typeof (DateTime)
         };
 
+        public static NameValueCollection Combine(
+            this NameValueCollection collection, 
+            params NameValueCollection[] collections)
+        {
+            var result = new NameValueCollection { collection };
+
+            foreach (var subCollection in collections)
+                foreach (var key in subCollection.AllKeys)
+                {
+                    if (result.AllKeys.Contains(key))
+                        continue;
+
+                    var value = subCollection[key];
+                    result.Add(key, value);
+                }
+
+            return result;
+        }
+
         public static T CreateObject<T>(
             this NameValueCollection collection,
             string prefix = null,
