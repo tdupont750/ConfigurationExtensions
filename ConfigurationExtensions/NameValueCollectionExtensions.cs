@@ -186,7 +186,7 @@ namespace ConfigurationExtensions
                 }
             }
 
-            if (validate)
+            if (validate && ValidationEnabledAttribute.IsEnabled(result))
             {
                 var context = new ValidationContext(result);
                 Validator.ValidateObject(result, context, true);

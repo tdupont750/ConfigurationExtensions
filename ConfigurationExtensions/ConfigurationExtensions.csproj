@@ -57,6 +57,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ValidationEnabledAttribute.cs" />
+    <Compile Include="ValidationEnabledAttributeTests.cs" />
     <Compile Include="NameValueCollectionExtensionsTests.cs" />
     <Compile Include="NameValueCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

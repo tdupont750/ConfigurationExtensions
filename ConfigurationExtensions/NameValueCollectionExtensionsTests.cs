@@ -157,6 +157,18 @@ namespace ConfigurationExtensions
         }
 
         [Fact]
+        public void CreateInvalidObjectWithoutValidation()
+        {
+            var collection = new NameValueCollection
+            {
+                {"TestConfigWithAnnotations.Int", "42"},
+                {"TestConfigWithAnnotations.IsEnabled", "false"},
+            };
+
+            collection.CreateObject<TestConfigWithAnnotations>();
+        }
+
+        [Fact]
         public void CreateInt()
         {
             var collection = new NameValueCollection
@@ -274,6 +286,14 @@ namespace ConfigurationExtensions
 
         internal class TestConfigWithAnnotations
         {
+            public TestConfigWithAnnotations()
+            {
+                IsEnabled = true;
+            }
+
+            [ValidationEnabled]
+            public bool IsEnabled { get; set; }
+
             [Range(1, 10)]
             public int Int { get; set; }
         }
